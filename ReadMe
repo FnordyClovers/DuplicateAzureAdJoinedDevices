@@ -1,5 +1,6 @@
 # Azure AD Duplicate Device Removal Script
 This script helps identify and remove duplicate computer objects in Azure Active Directory (Azure AD) that are causing issues, particularly when using services like Intune for device management. The script focuses on Windows OS devices and retains the most recently logged-in device while removing duplicates with the same display name.
+Other option of this script are to Keep the most recently DirSync Device or Remove devices that show up as WorkPlace Joine. WorkPlace Joine is generally going to be an Azure AD Registered Device. 
 
 ## Prerequisites
 - Azure Active Directory PowerShell module must be installed. You can install it using the following command:
