@@ -1,0 +1,30 @@
+# Retrieve Windows OS devices from Azure AD and select required properties
+$devices = Get-AzureADDevice | Where-Object { $_.OperatingSystem -like "*Windows*" } | Select-Object ObjectId, DisplayName, DeviceTrustType
+
+# Array to store devices to be removed
+$devicesToRemove = @()
+
+# Hashtable to track unique devices based on display name
+$uniqueDisplayNames = @{}
+
+# Iterate through each device
+foreach ($device in $devices) {
+    if ($device.DeviceTrustType -eq "WorkplaceJoined") {
+        if ($uniqueDisplayNames.ContainsKey($device.DisplayName)) {
+            # Duplicate device found
+            Write-Host "Duplicate device found: $($device.DisplayName)"
+            $devicesToRemove += $uniqueDisplayNames[$device.DisplayName]  # Add the existing device to the removal list
+            $devicesToRemove += $device  # Add the current device to the removal list
+        } else {
+            # First occurrence of the device with this display name
+            Write-Host "First occurrence of device: $($device.DisplayName)"
+            $uniqueDisplayNames[$device.DisplayName] = $device
+        }
+    }
+}
+
+# Remove the duplicate devices
+$devicesToRemove | ForEach-Object {
+    Write-Host "Removing device: $($_.DisplayName)"
+    Remove-AzureADDevice -ObjectId $_.ObjectId
+}
