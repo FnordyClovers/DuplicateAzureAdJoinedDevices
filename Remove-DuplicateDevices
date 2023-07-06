@@ -1,5 +1,5 @@
 # Retrieve Windows OS devices from Azure AD and select required properties
-$devices = Get-AzureADDevice | Where-Object { $_.OperatingSystem -like "*Windows*" } | Select-Object LastLogonDate, ObjectId, DisplayName | Sort-Object -Property LastLogonDate -Descending
+$devices = Get-AzureADDevice | Where-Object { $_.OperatingSystem -like "*Windows*" } | Select-Object ApproximateLastLogonTimeStamp, ObjectId, DisplayName | Sort-Object -Property ApproximateLastLogonTimeStamp -Descending
 
 # Array to store devices to be removed
 $devicesToRemove = @()
@@ -12,7 +12,7 @@ foreach ($device in $devices) {
     if ($uniqueDisplayNames.ContainsKey($device.DisplayName)) {
         # Duplicate device found
         $latestDevice = $uniqueDisplayNames[$device.DisplayName]
-        if ($device.LastLogonDate -gt $latestDevice.LastLogonDate) {
+        if ($device.ApproximateLastLogonTimeStamp -gt $latestDevice.LastLogonDate) {
             # Current device has a more recent last login date
             $devicesToRemove += $latestDevice  # Add the existing device to the removal list
             $uniqueDisplayNames[$device.DisplayName] = $device  # Replace the existing device with the current device
