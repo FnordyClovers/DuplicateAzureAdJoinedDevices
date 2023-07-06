@@ -1,0 +1,39 @@
+# Azure AD Duplicate Device Removal Script
+This script helps identify and remove duplicate computer objects in Azure Active Directory (Azure AD) that are causing issues, particularly when using services like Intune for device management. The script focuses on Windows OS devices and retains the most recently logged-in device while removing duplicates with the same display name.
+
+## Prerequisites
+- Azure Active Directory PowerShell module must be installed. You can install it using the following command:
+Install-Module -Name AzureAD
+
+## Usage
+1. Open PowerShell or Azure PowerShell.
+2. Connect to your Azure AD tenant using appropriate credentials:
+Connect-AzureAD
+
+
+3. Copy the script code and save it as a PowerShell script file (e.g., `Remove-DuplicateDevices.ps1`).
+4. Open a PowerShell session and navigate to the directory where the script is saved.
+5. Run the script using the following command:
+.\Remove-DuplicateDevices.ps1
+
+
+6. The script will retrieve Windows OS devices from Azure AD, identify duplicates based on display name, and keep the device with the most recent last login date while removing duplicates.
+7. Review the output and confirm the removal of devices before proceeding.
+8. After reviewing, the script will prompt you to confirm the removal. Type `Y` or `y` to proceed with the removal. To cancel, type any other key.
+9. The script will remove the duplicate devices from Azure AD.
+10. Its recommended to monitor the script execution and verify the results in the Azure AD admin center.
+
+## Note
+
+- Exercise caution before executing the script and ensure you understand its implications.
+- if you want to test it an Make sure this identifies the proper devices take out the remove object code before powershell execution and return the results to a .csv
+- Make sure you have appropriate permissions to manage Azure AD devices.
+- Back up any critical data or take necessary precautions before running the script.
+- Understand that the script removes devices permanently and irreversibly.
+
+## Disclaimer
+
+- This script is provided as-is without any warranty or support.
+- Use it at your own risk. Review and test it in a controlled environment before applying it to production systems. 
+- The script author are not responsible for any damages or loss resulting from the use of this script.
+
